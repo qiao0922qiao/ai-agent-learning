@@ -115,7 +115,7 @@
 <section id="diagram">
   <div class="sec-head"><span class="sec-num">3</span><h2>关系图解</h2></div>
   <figure class="figure">
-  <svg viewBox="0 0 820 470" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">
+  <svg viewBox="0 0 840 520" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif">
     <defs>
       <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
         <path d="M 0 0 L 10 5 L 0 10 z" fill="#57606a"/>
@@ -123,74 +123,79 @@
       <marker id="arrowP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
         <path d="M 0 0 L 10 5 L 0 10 z" fill="#6d28d9"/>
       </marker>
+      <marker id="arrowT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#0f9d8f"/>
+      </marker>
+      <marker id="arrowK" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#be185d"/>
+      </marker>
     </defs>
 
-    <!-- 用户 -->
-    <rect x="330" y="14" width="160" height="44" rx="22" fill="#f3efff" stroke="#6d28d9" stroke-width="1.5"/>
-    <text x="410" y="42" text-anchor="middle" font-size="15" font-weight="600" fill="#3b2a6b">用户（任务目标）</text>
+    <!-- ===== 用户 ===== -->
+    <rect x="330" y="18" width="180" height="44" rx="22" fill="#f3efff" stroke="#6d28d9" stroke-width="1.5"/>
+    <text x="420" y="46" text-anchor="middle" font-size="15" font-weight="600" fill="#3b2a6b">用户（任务目标）</text>
+    <line x1="420" y1="66" x2="420" y2="96" stroke="#57606a" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <text x="434" y="84" font-size="11.5" fill="#57606a">下达目标 / 接收汇报</text>
 
-    <!-- Agent 外框 -->
-    <rect x="70" y="100" width="680" height="200" rx="14" fill="#f6f8fa" stroke="#24292f" stroke-width="1.5" stroke-dasharray="6 3"/>
-    <text x="90" y="128" font-size="14" font-weight="700" fill="#24292f">Agent（自主决策循环）</text>
-    <line x1="410" y1="58" x2="410" y2="96" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
-    <text x="422" y="82" font-size="12" fill="#57606a">下达目标 / 接收汇报</text>
+    <!-- ===== Agent 外框 ===== -->
+    <rect x="60" y="100" width="720" height="250" rx="14" fill="#f6f8fa" stroke="#24292f" stroke-width="1.5" stroke-dasharray="6 3"/>
+    <text x="80" y="128" font-size="14" font-weight="700" fill="#24292f">Agent（自主决策循环）</text>
 
     <!-- LLM 大脑 -->
-    <rect x="110" y="150" width="170" height="64" rx="8" fill="#dbeafe" stroke="#1d4ed8" stroke-width="1.5"/>
-    <text x="195" y="178" text-anchor="middle" font-size="14" font-weight="600" fill="#1e3a8a">LLM（大脑）</text>
-    <text x="195" y="198" text-anchor="middle" font-size="12" fill="#1e3a8a">理解·规划·决策</text>
+    <rect x="100" y="165" width="160" height="70" rx="10" fill="#dbeafe" stroke="#1d4ed8" stroke-width="1.5"/>
+    <text x="180" y="194" text-anchor="middle" font-size="14" font-weight="600" fill="#1e3a8a">LLM（大脑）</text>
+    <text x="180" y="215" text-anchor="middle" font-size="11.5" fill="#1e3a8a">理解 · 规划 · 决策</text>
 
     <!-- 上下文窗口 -->
-    <rect x="330" y="140" width="250" height="140" rx="8" fill="#e6f7f5" stroke="#0f9d8f" stroke-width="1.8"/>
-    <text x="455" y="163" text-anchor="middle" font-size="14" font-weight="700" fill="#0b6e64">上下文窗口（工作台）</text>
-    <rect x="345" y="172" width="220" height="20" rx="4" fill="#ffffff" stroke="#0f9d8f" stroke-width="0.8"/>
-    <text x="455" y="186" text-anchor="middle" font-size="11.5" fill="#0b6e64">系统提示 + Skill 元数据（常驻）</text>
-    <rect x="345" y="197" width="220" height="20" rx="4" fill="#ffffff" stroke="#0f9d8f" stroke-width="0.8"/>
-    <text x="455" y="211" text-anchor="middle" font-size="11.5" fill="#0b6e64">对话历史 + 任务目标</text>
-    <rect x="345" y="222" width="220" height="20" rx="4" fill="#ffffff" stroke="#0f9d8f" stroke-width="0.8"/>
-    <text x="455" y="236" text-anchor="middle" font-size="11.5" fill="#0b6e64">工具定义 + 工具返回结果</text>
-    <rect x="345" y="247" width="220" height="20" rx="4" fill="#fff7e6" stroke="#d97706" stroke-width="0.8" stroke-dasharray="4 2"/>
-    <text x="455" y="261" text-anchor="middle" font-size="11.5" fill="#92600a">SKILL.md 正文（激活后按需读入）</text>
+    <rect x="315" y="140" width="230" height="120" rx="10" fill="#e6f7f5" stroke="#0f9d8f" stroke-width="1.8"/>
+    <text x="430" y="159" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0b6e64">上下文窗口（工作台）</text>
+    <rect x="327" y="166" width="206" height="18" rx="4" fill="#ffffff" stroke="#0f9d8f" stroke-width="0.8"/>
+    <text x="430" y="179" text-anchor="middle" font-size="10.5" fill="#0b6e64">系统提示 + Skill 元数据（常驻）</text>
+    <rect x="327" y="186" width="206" height="18" rx="4" fill="#ffffff" stroke="#0f9d8f" stroke-width="0.8"/>
+    <text x="430" y="199" text-anchor="middle" font-size="10.5" fill="#0b6e64">对话历史 + 任务目标</text>
+    <rect x="327" y="206" width="206" height="18" rx="4" fill="#ffffff" stroke="#0f9d8f" stroke-width="0.8"/>
+    <text x="430" y="219" text-anchor="middle" font-size="10.5" fill="#0b6e64">工具定义 + 工具返回结果</text>
+    <rect x="327" y="226" width="206" height="18" rx="4" fill="#fff7e6" stroke="#d97706" stroke-width="0.8" stroke-dasharray="4 2"/>
+    <text x="430" y="239" text-anchor="middle" font-size="10.5" fill="#92600a">SKILL.md 正文（激活后按需读入）</text>
 
     <!-- 工具 -->
-    <rect x="630" y="150" width="100" height="64" rx="8" fill="#fce7f3" stroke="#be185d" stroke-width="1.5"/>
-    <text x="680" y="178" text-anchor="middle" font-size="14" font-weight="600" fill="#831843">工具</text>
-    <text x="680" y="198" text-anchor="middle" font-size="11.5" fill="#831843">搜索·文件·代码</text>
+    <rect x="605" y="165" width="140" height="70" rx="10" fill="#fce7f3" stroke="#be185d" stroke-width="1.5"/>
+    <text x="675" y="194" text-anchor="middle" font-size="14" font-weight="600" fill="#831843">工具（Tools）</text>
+    <text x="675" y="215" text-anchor="middle" font-size="11.5" fill="#831843">搜索 · 文件 · 代码</text>
 
-    <!-- LLM <-> 上下文 -->
-    <line x1="280" y1="182" x2="326" y2="182" stroke="#0f9d8f" stroke-width="2" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
-    <text x="303" y="172" text-anchor="middle" font-size="11" fill="#0b6e64">依据它决策</text>
+    <!-- LLM ↔ 上下文 ↔ 工具 -->
+    <line x1="262" y1="200" x2="313" y2="200" stroke="#0f9d8f" stroke-width="2" marker-start="url(#arrowT)" marker-end="url(#arrowT)"/>
+    <text x="287" y="190" text-anchor="middle" font-size="10" fill="#0b6e64">依据决策</text>
+    <line x1="547" y1="200" x2="603" y2="200" stroke="#be185d" stroke-width="2" marker-start="url(#arrowK)" marker-end="url(#arrowK)"/>
+    <text x="575" y="190" text-anchor="middle" font-size="10.5" fill="#831843">调用</text>
 
-    <!-- Agent <-> 工具 -->
-    <line x1="580" y1="182" x2="626" y2="182" stroke="#be185d" stroke-width="2" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
-    <text x="603" y="172" text-anchor="middle" font-size="11" fill="#831843">调用</text>
+    <!-- 决策循环条 -->
+    <rect x="100" y="300" width="640" height="34" rx="17" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+    <path d="M 124 325 A 8 8 0 1 1 132 317" fill="none" stroke="#57606a" stroke-width="1.8" marker-end="url(#arrow)"/>
+    <text x="144" y="322" font-size="12" fill="#57606a">决策循环：思考 → 调用工具 → 观察结果（写入上下文）→ 再思考 …… 直到任务完成</text>
 
-    <!-- 决策循环 -->
-    <path d="M 195 214 L 195 250 Q 195 262 207 262 L 300 262" fill="none" stroke="#57606a" stroke-width="1.3" marker-end="url(#arrow)"/>
-    <path d="M 110 214 L 110 278 L 690 278 L 690 218" fill="none" stroke="#57606a" stroke-width="1.3" stroke-dasharray="5 3"/>
-    <text x="400" y="273" text-anchor="middle" font-size="11" fill="#57606a">思考 → 调用工具 → 观察结果（进入上下文）→ 再思考 …… 直到任务完成</text>
+    <!-- ===== Skill 文件夹 ===== -->
+    <rect x="100" y="415" width="300" height="90" rx="12" fill="#fef3e2" stroke="#d97706" stroke-width="1.8"/>
+    <text x="250" y="445" text-anchor="middle" font-size="14" font-weight="700" fill="#92600a">Skill 文件夹（Git 版本库）</text>
+    <text x="250" y="467" text-anchor="middle" font-size="12" fill="#92600a">SKILL.md（name + description + 指令）</text>
+    <text x="250" y="486" text-anchor="middle" font-size="11" fill="#9a7b4f">references/ · scripts/ · assets/（按需加载）</text>
 
-    <!-- Skill 文件夹 -->
-    <rect x="110" y="360" width="280" height="86" rx="8" fill="#fef3e2" stroke="#d97706" stroke-width="1.8"/>
-    <text x="250" y="388" text-anchor="middle" font-size="14" font-weight="700" fill="#92600a">Skill 文件夹（Git 版本库）</text>
-    <text x="250" y="410" text-anchor="middle" font-size="12" fill="#92600a">SKILL.md（name + description + 指令）</text>
-    <text x="250" y="430" text-anchor="middle" font-size="11" fill="#9a7b4f">references/ · scripts/ · assets/（按需加载）</text>
+    <!-- 沉淀：Agent → Skill（下行，左侧） -->
+    <path d="M 150 352 L 150 411" fill="none" stroke="#6d28d9" stroke-width="2" marker-end="url(#arrowP)"/>
+    <text x="140" y="378" font-size="11.5" fill="#6d28d9" text-anchor="end">任务完成后</text>
+    <text x="140" y="394" font-size="11.5" fill="#6d28d9" text-anchor="end">沉淀为可复用知识</text>
 
-    <!-- 沉淀箭头 -->
-    <path d="M 195 354 L 195 316" fill="none" stroke="#6d28d9" stroke-width="2" marker-end="url(#arrowP)"/>
-    <text x="150" y="340" font-size="11.5" fill="#6d28d9" text-anchor="end">任务完成后</text>
-    <text x="150" y="356" font-size="11.5" fill="#6d28d9" text-anchor="end">沉淀为可复用知识</text>
+    <!-- 激活：Skill → 上下文（折线上行，右侧） -->
+    <path d="M 300 411 L 300 388 Q 300 382 306 382 L 424 382 Q 430 382 430 376 L 430 352" fill="none" stroke="#6d28d9" stroke-width="2" marker-end="url(#arrowP)"/>
+    <text x="365" y="374" text-anchor="middle" font-size="11.5" fill="#6d28d9">任务匹配时按需注入上下文</text>
 
-    <!-- 激活箭头 -->
-    <path d="M 310 403 L 452 293" fill="none" stroke="#6d28d9" stroke-width="2" marker-end="url(#arrowP)"/>
-    <text x="360" y="368" font-size="11.5" fill="#6d28d9">任务匹配时激活：</text>
-    <text x="360" y="384" font-size="11.5" fill="#6d28d9">只读入需要的部分</text>
-
-    <!-- 外部资料 -->
-    <rect x="470" y="368" width="260" height="70" rx="8" fill="#f6f8fa" stroke="#57606a" stroke-width="1.2"/>
-    <text x="600" y="396" text-anchor="middle" font-size="13" font-weight="600" fill="#3b2a6b">外部世界（文档·网页·数据库）</text>
-    <text x="600" y="418" text-anchor="middle" font-size="11.5" fill="#57606a">经工具调用后以文本形式进入上下文</text>
-    <path d="M 470 403 L 448 350" fill="none" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <!-- ===== 外部世界 ===== -->
+    <rect x="560" y="425" width="220" height="70" rx="12" fill="#f6f8fa" stroke="#57606a" stroke-width="1.2"/>
+    <text x="670" y="453" text-anchor="middle" font-size="13" font-weight="600" fill="#3b2a6b">外部世界</text>
+    <text x="670" y="475" text-anchor="middle" font-size="11.5" fill="#57606a">文档 · 网页 · 数据库</text>
+    <line x1="670" y1="423" x2="670" y2="352" stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <text x="682" y="384" font-size="11" fill="#57606a">工具调用后</text>
+    <text x="682" y="399" font-size="11" fill="#57606a">结果进入上下文</text>
   </svg>
   <figcaption>图 1：三个概念如何协作——Agent 在决策循环中依据上下文行动；Skill 在任务匹配时把知识按需注入上下文；好的做法在任务完成后沉淀回 Skill 文件夹，形成知识循环。</figcaption>
   </figure>
