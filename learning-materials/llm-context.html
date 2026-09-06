@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念学习资料：大模型的上下文（Context）</title>
+<style>
+  :root { --primary:#0f9d8f; --primary-light:#e6f7f5; --text:#24292f; --muted:#57606a; --border:#d0d7de; --bg:#ffffff; --card:#f6f8fa; }
+  * { box-sizing:border-box; }
+  body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; color:var(--text); background:var(--bg); margin:0; line-height:1.75; }
+  .container { max-width:820px; margin:0 auto; padding:32px 24px 64px; }
+  header { border-bottom:3px solid var(--primary); padding-bottom:20px; margin-bottom:32px; }
+  h1 { font-size:1.9em; margin:0 0 6px; }
+  .tagline { font-size:1.05em; color:var(--primary); font-weight:600; }
+  .meta { font-size:.85em; color:var(--muted); margin-top:8px; }
+  h2 { font-size:1.25em; margin:40px 0 12px; padding-left:12px; border-left:4px solid var(--primary); }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:16px 20px; margin:12px 0; }
+  ul,ol { padding-left:1.4em; }
+  li { margin:.35em 0; }
+  table { border-collapse:collapse; width:100%; margin:12px 0; font-size:.95em; }
+  th,td { border:1px solid var(--border); padding:8px 12px; text-align:left; vertical-align:top; }
+  th { background:var(--primary-light); }
+  .personal { background:var(--primary-light); border:1px solid var(--primary); border-radius:8px; padding:16px 20px; }
+  details { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:10px 16px; margin:8px 0; }
+  summary { cursor:pointer; font-weight:600; }
+  .src { margin:8px 0; }
+  .src a { color:var(--primary); }
+  .note { font-size:.9em; color:var(--muted); }
+  .diagram { background:var(--card); border:1px dashed var(--border); border-radius:8px; padding:14px 18px; font-family:Consolas,monospace; font-size:.9em; overflow-x:auto; white-space:pre; }
+  footer { margin-top:48px; padding-top:16px; border-top:1px solid var(--border); font-size:.85em; color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>大模型的上下文（Context）</h1>
+  <div class="tagline">一句话定位：模型生成每个字时能"看到"的全部信息，是它唯一的工作记忆。</div>
+  <div class="meta">概念领域：大语言模型 / AI 工程 ｜ 生成日期：2026-09-06 ｜ 由 learning-material-generator Skill 生成，经人工核查修改</div>
+</header>
+
+<h2>1. 学习目标</h2>
+<div class="card">
+<ul>
+  <li>能说清"上下文窗口"和"训练数据"的区别（工作记忆 vs 长期知识）</li>
+  <li>能列出一次 Agent 任务中上下文里通常装着哪些东西</li>
+  <li>能解释为什么对话变长后模型会"忘事"，以及常见的应对手段（摘要压缩、检索、按需加载）</li>
+  <li>能识别"上下文用得多≠效果好"，理解上下文质量比数量更重要</li>
+  <li>能把"上下文"和 Agent、Skill 两个概念联系起来解释</li>
+</ul>
+</div>
+
+<h2>2. 核心问题</h2>
+<div class="card">
+<ol>
+  <li>大模型回答问题时，它到底"看得见"什么、看不见什么？</li>
+  <li>为什么明明训练过海量数据，它却记不住三句话前说过的内容之外的事？</li>
+  <li>上下文满了会怎样？有哪些工程上的应对办法？</li>
+</ol>
+</div>
+
+<h2>3. 我的理解（个人解释）</h2>
+<div class="personal">
+<p><strong>我是这样理解的：</strong>大模型像一个<strong>知识渊博但只能看着一张便签纸工作的人</strong>。它的脑子里（训练数据里）装着整个互联网的知识，但每次回答问题时，它眼前只有一张便签纸——纸上写的东西就是<strong>上下文</strong>。便签纸有固定大小（上下文窗口，以 token 计），写满了就得擦掉点旧内容才能写新的。</p>
+<p>这个类比帮我理解了三件事：第一，模型<strong>只</strong>根据便签纸上的内容决定下一个字，纸上没写的，它就只能靠"脑子里的印象"猜——这就是为什么不在上下文里的信息它答不准，也是幻觉的来源之一。第二，对话越长、工具调用越多，纸上写的东西越多，早期内容可能被挤出窗口，模型就"忘了"前面说过什么。第三，往纸上<strong>多写</strong>不一定更好：无关的旧内容会干扰注意力，真正重要的是纸上写的是不是<strong>对的信息</strong>——这也是现在大家讲"上下文工程（context engineering）"的原因。</p>
+<p>还有一个容易忽略的点：上下文不只是"历史对话"。系统提示、工具定义、检索到的资料、工具返回的结果、Skill 的说明文件……全都要占这张便签纸。做 Agent 时上下文就是稀缺资源，要像管理内存一样管理它。</p>
+</div>
+
+<h2>4. 核心机制 / 组成</h2>
+<div class="card">
+<p>一次典型 Agent 任务的上下文构成：</p>
+<div class="diagram">┌─────────────────── 上下文窗口（以 token 计，如 200K）───────────────────┐
+│ 系统提示（角色/规则）  Skill 元数据（各 Skill 的 name + description）      │
+│ 对话历史（用户消息 + 模型回复，逐轮累积）                                 │
+│ 工具定义（有哪些工具可用、怎么调）                                        │
+│ 工具返回结果（搜索结果、文件内容……往往最占空间）                           │
+│ 当前任务 + 模型正在生成的输出                                             │
+└──────────────────────────────────────────────────────────────────┘</div>
+<p>关键机制：</p>
+<ul>
+  <li><strong>逐轮累积</strong>：每轮对话，之前所有消息 + 新消息一起作为输入发给模型，使用量随轮次线性增长（Anthropic 文档中的说明）</li>
+  <li><strong>无内部记忆升级</strong>：模型参数在推理时不变，跨请求的"记忆"只能靠把信息重新放进上下文</li>
+  <li><strong>超限行为</strong>：较新的模型在输入+输出超过窗口时会直接报错（而非静默截断），所以需要主动管理</li>
+  <li><strong>常见管理手段</strong>：摘要压缩（把早期对话总结成一段）、按需加载（用检索/RAG 只取相关片段）、清理旧的工具结果</li>
+</ul>
+</div>
+
+<h2>5. 具体应用场景</h2>
+<div class="card">
+<p><strong>场景：让 Agent 修一个大型代码仓库里的 bug。</strong></p>
+<p>假设代码库有 50 万行，远超 200K token 的窗口。差的用法是把整个仓库塞进上下文——塞不下，而且无关代码会稀释模型注意力。好的用法是：Agent 先用搜索工具找到疑似出错的 2 个文件（只把这两个文件的内容放进上下文），运行测试拿到报错信息（几行日志进上下文），再针对性修改。全程上下文里只保留"和这个 bug 有关的信息"。这也解释了 Agent 为什么普遍采用"工具 + 按需读取"的架构：不是模型不想一次看全部，是<strong>便签纸写不下，写下了也看不好</strong>。</p>
+</div>
+
+<h2>6. 概念辨析（易混淆点与边界）</h2>
+<div class="card">
+<table>
+  <tr><th>易混淆项</th><th>区别</th><th>边界：什么时候不是"上下文"</th></tr>
+  <tr>
+    <td>上下文窗口 vs 训练数据</td>
+    <td>上下文窗口是推理时的"工作记忆"（当前可见信息）；训练数据是预训练阶段沉淀进模型参数的"长期知识"</td>
+    <td>模型参数里记住的通用知识不属于上下文；上下文专指本次请求中可见的 token 序列</td>
+  </tr>
+  <tr>
+    <td>上下文 vs 提示词（Prompt）</td>
+    <td>提示词通常指用户输入的那段指令；上下文是更广的概念——系统提示、历史、工具结果、提示词全都在上下文里</td>
+    <td>只说"用户写的那句话"时是提示词；模型可见的全部信息才是上下文</td>
+  </tr>
+  <tr>
+    <td>长上下文 vs 记忆（Memory）</td>
+    <td>长上下文是"这张便签纸更大"；记忆系统是把信息存到外部（文件、数据库）再择机放回上下文的机制</td>
+    <td>能无限存但不在当前请求可见范围内的外部存储，不叫上下文，叫外部记忆</td>
+  </tr>
+</table>
+<p><strong>使用边界（重要）：</strong>更大的上下文窗口 ≠ 更强的记忆能力。窗口内信息过多会带来注意力稀释与"中间内容易被忽略"的问题；工程上仍应优先精选高质量内容进入上下文，而不是无脑堆量。</p>
+</div>
+
+<h2>7. 自测问题</h2>
+<details><summary>Q1：为什么模型"学过"某份 2023 年的报告，你问它报告细节它却答不准？</summary>
+<p><strong>参考答案：</strong>训练数据只把通用模式沉淀进参数，不保证逐字保留具体文档细节；推理时模型只能可靠使用<strong>当前上下文里</strong>的信息。要它答准，就该把报告原文（或相关片段）放进上下文。</p>
+</details>
+<details><summary>Q2：一次多轮 Agent 任务中，上下文使用量如何变化？</summary>
+<p><strong>参考答案：</strong>随轮次线性累积：每轮都把之前全部消息 + 新内容一起作为输入，工具返回的结果通常占大头，所以长任务必须做压缩/清理管理。</p>
+</details>
+<details><summary>Q3：列出至少三种上下文超限的工程应对手段。</summary>
+<p><strong>参考答案：</strong>① 摘要压缩（总结早期对话替换原文）；② 检索/RAG（只把相关片段放入上下文）；③ 清理旧工具结果 / 按需加载（如 Skill 的渐进式披露，只读当前需要的文件）。</p>
+</details>
+<details><summary>Q4："把 100 万 token 全塞进窗口"为什么不是万能解法？</summary>
+<p><strong>参考答案：</strong>① 成本和延迟随 token 数上升；② 注意力被无关内容稀释，长上下文中部信息容易被忽略，回答质量未必更好；③ 超长请求常有单独的速率限制与更高计价。上下文工程的核心是精选信息而非堆量。</p>
+</details>
+<details><summary>Q5：系统提示、Skill 元数据、工具结果，哪些会占用上下文窗口？</summary>
+<p><strong>参考答案：</strong>全部都会。上下文窗口容纳模型本次请求可见的一切 token——系统提示、对话历史、工具定义与结果、Skill 的 name/description 元数据（以及被激活后读入的 SKILL.md 正文）都计入。</p>
+</details>
+
+<h2>8. 参考来源（已核实可访问）</h2>
+<div class="card">
+<div class="src">1. <a href="https://docs.anthropic.com/zh-CN/docs/build-with-claude/context-windows">Anthropic 官方文档：上下文窗口（中文）</a>——上下文窗口的权威定义（"工作记忆"）、逐轮累积机制、超限报错行为与压缩管理策略。本文机制部分主要依据此文。</div>
+<div class="src">2. <a href="https://docs.anthropic.com/zh-CN/docs/glossary">Anthropic 官方术语表（中文）</a>——明确了上下文窗口与训练语料库的区别这一关键辨析点。</div>
+<div class="src">3. <a href="https://www.anthropic.com/news/100k-context-windows">Anthropic：Introducing 100K Context Windows</a>——官方对大上下文窗口能做什么、如何换算篇幅的说明，帮助建立 token 量级直觉。</div>
+</div>
+
+<footer>由 <code>learning-material-generator</code> Skill 生成 ｜ "我的理解"部分建议本人阅读后用自己的话修改 ｜ 生成于 2026-09-06</footer>
+</div>
+</body>
+</html>

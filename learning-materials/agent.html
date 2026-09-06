@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念学习资料：Agent（智能体）</title>
+<style>
+  :root { --primary:#3b5bdb; --primary-light:#edf2ff; --text:#24292f; --muted:#57606a; --border:#d0d7de; --bg:#ffffff; --card:#f6f8fa; }
+  * { box-sizing:border-box; }
+  body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; color:var(--text); background:var(--bg); margin:0; line-height:1.75; }
+  .container { max-width:820px; margin:0 auto; padding:32px 24px 64px; }
+  header { border-bottom:3px solid var(--primary); padding-bottom:20px; margin-bottom:32px; }
+  h1 { font-size:1.9em; margin:0 0 6px; }
+  .tagline { font-size:1.05em; color:var(--primary); font-weight:600; }
+  .meta { font-size:.85em; color:var(--muted); margin-top:8px; }
+  h2 { font-size:1.25em; margin:40px 0 12px; padding-left:12px; border-left:4px solid var(--primary); }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:16px 20px; margin:12px 0; }
+  ul,ol { padding-left:1.4em; }
+  li { margin:.35em 0; }
+  table { border-collapse:collapse; width:100%; margin:12px 0; font-size:.95em; }
+  th,td { border:1px solid var(--border); padding:8px 12px; text-align:left; vertical-align:top; }
+  th { background:var(--primary-light); }
+  .personal { background:var(--primary-light); border:1px solid var(--primary); border-radius:8px; padding:16px 20px; }
+  details { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:10px 16px; margin:8px 0; }
+  summary { cursor:pointer; font-weight:600; }
+  .src { margin:8px 0; }
+  .src a { color:var(--primary); }
+  .note { font-size:.9em; color:var(--muted); }
+  .flow { font-family:Consolas,monospace; background:var(--card); border:1px dashed var(--border); border-radius:8px; padding:14px 18px; overflow-x:auto; white-space:nowrap; font-size:.92em; }
+  footer { margin-top:48px; padding-top:16px; border-top:1px solid var(--border); font-size:.85em; color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Agent（智能体）</h1>
+  <div class="tagline">一句话定位：不只会聊天，还会自己决定"下一步做什么"去完成任务的 AI 系统。</div>
+  <div class="meta">概念领域：人工智能 / 大模型应用 ｜ 生成日期：2026-09-06 ｜ 由 learning-material-generator Skill 生成，经人工核查修改</div>
+</header>
+
+<h2>1. 学习目标</h2>
+<div class="card">
+<ul>
+  <li>能用自己的话说清 Agent 和普通 LLM 对话（Chatbot）、和 Workflow（工作流）的区别</li>
+  <li>能说出 Agent 的四个核心组成：LLM、工具、规划（循环）、记忆/上下文</li>
+  <li>能判断一个具体任务适合用 Workflow 还是 Agent</li>
+  <li>能解释 Agent "自主性"的来源——流程控制权在大模型手里而不是写死的代码里</li>
+  <li>能识别 Agent 方案的成本与风险（不确定性、Token 消耗、调试困难）</li>
+</ul>
+</div>
+
+<h2>2. 核心问题</h2>
+<div class="card">
+<ol>
+  <li>同样是大模型驱动的系统，凭什么有的叫"工作流"，有的叫"Agent"？分界线画在哪？</li>
+  <li>Agent 是靠什么"自己拿主意"的？它的决策循环长什么样？</li>
+  <li>什么时候<strong>不应该</strong>用 Agent？</li>
+</ol>
+</div>
+
+<h2>3. 我的理解（个人解释）</h2>
+<div class="personal">
+<p><strong>我是这样理解的：</strong>普通的大模型对话像<strong>问路</strong>——你问一句，它答一句，具体怎么走还是你自己的事；而 Agent 像<strong>你雇的一位司机</strong>——你只说"送我去机场"，它自己看导航、选路线、遇到堵路会绕行，到了地方还告诉你"到了"。</p>
+<p>关键差别在于<strong>谁掌握流程控制权</strong>。Anthropic 在《Building Effective Agents》里给了一条我特别认同的分界线：如果大模型的每一步都被代码预先安排好（第一步干什么、第二步干什么都写死了），那是 <em>Workflow（工作流）</em>，大模型只是流水线上的工人；如果大模型<strong>自己动态决定</strong>下一步调用什么工具、什么时候算干完了，那才是 <em>Agent</em>。所以 Agent 的本质不是"更聪明"，而是"更自主"——自主权从开发者手里移交给了模型。</p>
+<p>还有一点我原来想错了：我以为 Agent 一定很复杂、要上多智能体框架。实际上 Anthropic 的建议恰恰相反——<strong>能用简单方案就别上 Agent</strong>。Agent 是拿延迟和成本换灵活性，任务路径能预先想清楚的就该用 Workflow，甚至单次 LLM 调用就够了。</p>
+</div>
+
+<h2>4. 核心机制 / 组成</h2>
+<div class="card">
+<p>一个典型 Agent 由四部分组成：</p>
+<table>
+  <tr><th>组成</th><th>作用</th><th>类比</th></tr>
+  <tr><td><strong>LLM（大脑）</strong></td><td>负责理解目标、推理规划、决定下一步动作</td><td>司机的脑子</td></tr>
+  <tr><td><strong>工具（Tools）</strong></td><td>搜索、读写文件、执行代码、调用 API 等实际行动能力</td><td>车 + 导航仪</td></tr>
+  <tr><td><strong>决策循环（Agent Loop）</strong></td><td>"思考 → 行动 → 观察结果 → 再思考"的循环，直到模型判断任务完成</td><td>边开边看路况</td></tr>
+  <tr><td><strong>上下文 / 记忆</strong></td><td>装载目标、历史操作和中间结果的"工作记忆"</td><td>司机对这一趟行程的记忆</td></tr>
+</table>
+<p>决策循环是 Agent 的心脏，大致长这样：</p>
+<div class="flow">接收目标 → [思考：还差什么？] → 调用工具 → [观察：结果如何？] → 未完成？回到思考 → 完成 → 汇报结果</div>
+<p class="note">注：Anthropic 把 LLM + 检索 + 工具 + 记忆的增强单元称为 "augmented LLM"（增强型 LLM），它是所有 agentic 系统的基本构件；Workflow 和 Agent 都是围绕它搭建的。</p>
+</div>
+
+<h2>5. 具体应用场景</h2>
+<div class="card">
+<p><strong>场景：用 WorkBuddy 整理一份课程作业仓库。</strong></p>
+<p>我这次作业就是一个真实例子：我说"帮我完成这份作业"，Agent（WorkBuddy）自己拆解出一系列步骤——检查 gh CLI 登录状态 → 创建 GitHub 仓库 → 克隆到本地 → 写 SKILL.md → 联网核实资料来源 → 生成学习资料 → git 提交推送。这些步骤没有一个是我预先写死的流程，它边干边决定下一步（比如发现已登录 gh 就直接建仓库）。对比之下，如果用 Workflow 做，我需要预先定义好每个步骤，换个作业题目就得重写流程。</p>
+<p><strong>反面判断：</strong>如果任务固定不变——比如"每天早上 8 点把昨天的销售数据汇总成一张表"，步骤完全可枚举，那就该用 Workflow（定时脚本 + 固定流水线），更稳定、更便宜、更好调试。</p>
+</div>
+
+<h2>6. 概念辨析（易混淆点与边界）</h2>
+<div class="card">
+<table>
+  <tr><th>易混淆项</th><th>区别</th><th>边界：什么时候不是 Agent</th></tr>
+  <tr>
+    <td>Agent vs Chatbot</td>
+    <td>Chatbot 只生成文本回复，不采取行动；Agent 会调用工具、对环境产生实际影响</td>
+    <td>只会聊天、什么文件都不改、什么工具都不调的，只是对话应用</td>
+  </tr>
+  <tr>
+    <td>Agent vs Workflow</td>
+    <td>Workflow 的流程控制权在代码（路径预定义）；Agent 的控制权在大模型（路径动态决定）</td>
+    <td>只要"下一步做什么"是代码写死的，无论叠多少个 LLM 调用，都只是 Workflow</td>
+  </tr>
+  <tr>
+    <td>Agent vs 机器人流程自动化（RPA）</td>
+    <td>RPA 按脚本精确模拟人的界面操作，无理解能力；Agent 用 LLM 理解意图后自主行动</td>
+    <td>如果系统只是机械重复录制的操作、遇到意外就报错，那是 RPA 不是 Agent</td>
+  </tr>
+</table>
+<p><strong>使用边界（重要）：</strong>Anthropic 的工程建议是——从最简单的方案开始：单次 LLM 调用 → 检索/示例增强 → Workflow → 最后才是 Agent。任务路径无法预先想清楚、需要模型临场判断的开放性任务，才值得用 Agent。</p>
+</div>
+
+<h2>7. 自测问题</h2>
+<details><summary>Q1：某系统按固定顺序调用了 5 次大模型，每次处理上一步的输出。它是 Agent 吗？</summary>
+<p><strong>参考答案：</strong>不是。这是典型的 Workflow（提示链 / prompt chaining）。虽然它多次调用 LLM，但每一步由代码预先安排，LLM 没有掌握流程控制权，不能自主决定下一步做什么、何时结束。</p>
+</details>
+<details><summary>Q2：Agent "自主性"的技术来源是什么？</summary>
+<p><strong>参考答案：</strong>决策循环（agent loop）：模型在"思考 → 调用工具 → 观察结果"的循环中自己决定下一步调用哪个工具、是否继续，直到它判断任务完成。控制权在模型而非预写代码。</p>
+</details>
+<details><summary>Q3：列出 Agent 相比 Workflow 的两个代价。</summary>
+<p><strong>参考答案：</strong>① 不确定性高（同样的任务可能走出不同路径，出错路径难以复现和调试）；② 成本与延迟更高（多轮工具调用、多轮 LLM 推理，Token 消耗显著增加）。</p>
+</details>
+<details><summary>Q4：为什么"多智能体框架"不等于 Agent？</summary>
+<p><strong>参考答案：</strong>框架只是实现工具。用重型框架搭出来的系统如果流程都是预定义的，本质仍是 Workflow；反过来，几十行代码直连 LLM API，只要让模型自主决定工具调用，就是 Agent。判断标准是控制权归属，不是用了什么框架。</p>
+</details>
+<details><summary>Q5：你的任务"每天汇总销售数据发邮件"该用什么方案？为什么？</summary>
+<p><strong>参考答案：</strong>Workflow（甚至定时脚本 + 单次 LLM 调用）。任务步骤完全可枚举、路径可预先定义，Workflow 更可预测、更易测试、成本更低。只有在任务路径无法预先想清楚时才需要 Agent。</p>
+</details>
+
+<h2>8. 参考来源（已核实可访问）</h2>
+<div class="card">
+<div class="src">1. <a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic《Building Effective Agents》</a>——讲清楚了 Workflow 与 Agent 的分界线（控制权归属）、增强型 LLM 构件，以及"从简单开始"的工程原则。本文定义部分主要依据此文。</div>
+<div class="src">2. <a href="https://academy.claude.com/courses/building-with-the-claude-api/agents-and-workflows">Claude Academy：Agents and workflows</a>——官方课程，用实例对比了 Workflow 与 Agent 各自的优缺点和选型建议。</div>
+<div class="src">3. <a href="https://docs.anthropic.com/zh-CN/docs/glossary">Anthropic 官方术语表（中文）</a>——核对 LLM、上下文窗口等基础术语的官方定义。</div>
+</div>
+
+<footer>由 <code>learning-material-generator</code> Skill 生成 ｜ "我的理解"部分建议本人阅读后用自己的话修改 ｜ 生成于 2026-09-06</footer>
+</div>
+</body>
+</html>
