@@ -84,6 +84,11 @@
   .src { display:flex; gap:10px; margin:12px 0; padding:12px 16px; background:var(--tint1); border-radius:10px; font-size:.94em; }
   .src .n { flex:none; width:22px; height:22px; border-radius:50%; background:var(--accent); color:#fff; font-size:.75em; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:.25em; }
   .src a { color:var(--accent); font-weight:600; text-decoration:none; border-bottom:1px dashed var(--accent-2); }
+  /* ---- 30 秒速懂 ---- */
+  .quick { margin-top:20px; background:#fffdf2; border:1px solid #eadfa8; border-left:5px solid #d9a406; border-radius:12px; padding:14px 22px; font-size:.96em; position:relative; }
+  .quick .q-tag { display:inline-block; background:linear-gradient(135deg,#d9a406,#f0b429); color:#fff; font-weight:700; font-size:.78em; border-radius:999px; padding:2px 14px; margin-bottom:8px; }
+  .quick p { margin:.4em 0; }
+
   footer { margin-top:56px; padding-top:18px; border-top:1px solid var(--border); font-size:.85em; color:var(--muted); text-align:center; }
 </style>
 </head>
@@ -99,6 +104,12 @@
     <span class="chip">来源：<b>已联网核实</b></span>
   </div>
 </header>
+
+<div class="quick">
+  <span class="q-tag">⚡ 30 秒速懂</span>
+  <p><strong>一句话：</strong>上下文就是大模型"此刻能看见的全部内容"，是它唯一的工作记忆。</p>
+  <p><strong>举个例子：</strong>像闭卷考试——模型的"脑子"里装着三年学的课本（训练数据），但做题时眼前只有一张<strong>草稿纸</strong>（上下文）。它只能根据草稿纸上写了什么来答题：你三句话前说过的事如果没留在草稿纸上，它就"忘了"；草稿纸写满了，就得擦掉旧内容才能写新的。所以跟 AI 聊天"越聊越忘事"，不是它笨，是草稿纸有限。</p>
+</div>
 
 <nav class="toc">
   <a href="#goals">学习目标</a><a href="#questions">核心问题</a><a href="#personal">我的理解</a><a href="#mechanism">核心机制</a><a href="#scene">应用场景</a><a href="#vs">概念辨析</a><a href="#quiz">自测</a><a href="#sources">参考来源</a>
@@ -151,7 +162,7 @@
 └─────────────────────────────────────────────────────────────┘</div>
     <p style="margin-top:16px">关键机制：</p>
     <ul style="padding-left:1.4em">
-      <li><strong>逐轮累积</strong>：每轮对话，之前所有消息 + 新消息一起作为输入发给模型，使用量随轮次线性增长（Anthropic 文档中的说明）</li>
+      <li><strong>逐轮累积</strong>：每轮对话，之前所有消息 + 新消息一起作为输入发给模型，使用量随轮次线性增长（Anthropic 官方工程博客中亦有说明）</li>
       <li><strong>无内部记忆升级</strong>：模型参数在推理时不变，跨请求的"记忆"只能靠把信息重新放进上下文</li>
       <li><strong>超限行为</strong>：较新的模型在输入+输出超过窗口时会直接报错（而非静默截断），所以需要主动管理</li>
       <li><strong>常见管理手段</strong>：摘要压缩（把早期对话总结成一段）、按需加载（用检索/RAG 只取相关片段）、清理旧的工具结果</li>
@@ -240,13 +251,13 @@
 <section id="sources">
   <div class="sec-head"><span class="sec-num">8</span><h2>参考来源（已核实可访问）</h2></div>
   <div class="card">
-    <div class="src"><span class="n">1</span><div><a href="https://docs.anthropic.com/zh-CN/docs/build-with-claude/context-windows">Anthropic 官方文档：上下文窗口（中文）</a><br>上下文窗口的权威定义（"工作记忆"）、逐轮累积机制、超限报错行为与压缩管理策略。本文机制部分主要依据此文。</div></div>
-    <div class="src"><span class="n">2</span><div><a href="https://docs.anthropic.com/zh-CN/docs/glossary">Anthropic 官方术语表（中文）</a><br>明确了上下文窗口与训练语料库的区别这一关键辨析点。</div></div>
+    <div class="src"><span class="n">1</span><div><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Anthropic 官方工程博客：Effective context engineering for AI agents</a><br>把上下文窗口定义为"有限的注意力预算"，讲清了上下文精选、压缩与"质量重于数量"的原则。本文机制与辨析部分的重要依据。</div></div>
+    <div class="src"><span class="n">2</span><div><a href="https://www.anthropic.com/engineering/building-agents-with-the-claude-agent-sdk">Anthropic 官方工程博客：Building agents with the Claude Agent SDK</a><br>说明了 Agent 任务中上下文的构成（系统提示、对话历史、工具结果如何累积），是"核心机制"小节的对照材料。</div></div>
     <div class="src"><span class="n">3</span><div><a href="https://www.anthropic.com/news/100k-context-windows">Anthropic：Introducing 100K Context Windows</a><br>官方对大上下文窗口能做什么、如何换算篇幅的说明，帮助建立 token 量级直觉。</div></div>
   </div>
 </section>
 
-<footer>由 <b>learning-material-generator</b> Skill 生成 ｜ "我的理解"部分建议本人阅读后用自己的话修改 ｜ 2026-09-06</footer>
+<footer>由 <b>learning-material-generator</b> Skill 生成 ｜ "我的理解"部分建议本人阅读后用自己的话修改 ｜ 生成 2026-09-06 ｜ 修订 2026-09-10（新增"30 秒速懂"，核实并修正参考来源）</footer>
 </div>
 
 <script>

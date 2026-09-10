@@ -65,6 +65,11 @@
 
   code { background:var(--tint1); border-radius:5px; padding:1px 7px; font-size:.9em; font-family:Consolas,monospace; color:#5b21b6; }
 
+  /* ---- 30 秒速懂 ---- */
+  .quick { margin-top:20px; background:#fffdf2; border:1px solid #eadfa8; border-left:5px solid #d9a406; border-radius:12px; padding:14px 22px; font-size:.96em; position:relative; }
+  .quick .q-tag { display:inline-block; background:linear-gradient(135deg,#d9a406,#f0b429); color:#fff; font-weight:700; font-size:.78em; border-radius:999px; padding:2px 14px; margin-bottom:8px; }
+  .quick p { margin:.4em 0; }
+
   footer { margin-top:56px; padding-top:18px; border-top:1px solid var(--border); font-size:.85em; color:var(--muted); text-align:center; }
 </style>
 </head>
@@ -79,6 +84,12 @@
     <span class="chip">配套：<b><a href="agent.html">Agent</a> · <a href="llm-context.html">上下文</a> · <a href="skill.html">Skill</a></b></span>
   </div>
 </header>
+
+<div class="quick">
+  <span class="q-tag">⚡ 30 秒速懂</span>
+  <p><strong>一句话：</strong>Agent 是干活的<strong>司机</strong>，上下文是司机挡风玻璃和仪表盘里能看到的<strong>一切</strong>，Skill 是随车携带、用到就翻的<strong>操作手册</strong>。</p>
+  <p><strong>举个例子：</strong>司机只根据眼前看到的路况开车（上下文决定他"知道什么"）；开到陌生路段就翻手册（Skill 提供方法）；跑完一趟把新经验写回手册，下一趟更好开（知识沉淀）。三者缺一个，这趟活都干不利索。</p>
+</div>
 
 <nav class="toc">
   <a href="#overview">总体关系</a><a href="#compare">概念对照表</a><a href="#diagram">关系图解</a><a href="#ctx-agent">上下文如何影响 Agent</a><a href="#skill-loop">Skill 如何沉淀知识</a><a href="#homework">作业验证</a>
@@ -241,7 +252,7 @@
   </div>
 </section>
 
-<footer>由 <b>learning-material-generator</b> Skill 生成 ｜ 2026-09-06 ｜ 参考来源见三份配套概念资料</footer>
+<footer>由 <b>learning-material-generator</b> Skill 生成 ｜ 生成 2026-09-06 ｜ 修订 2026-09-10（新增"30 秒速懂"，新增 Markdown 版 concept-relationship.md）｜ 参考来源见三份配套概念资料</footer>
 </div>
 </body>
 </html>

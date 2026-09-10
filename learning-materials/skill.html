@@ -85,6 +85,11 @@
   .src { display:flex; gap:10px; margin:12px 0; padding:12px 16px; background:var(--tint1); border-radius:10px; font-size:.94em; }
   .src .n { flex:none; width:22px; height:22px; border-radius:50%; background:var(--accent); color:#fff; font-size:.75em; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:.25em; }
   .src a { color:var(--accent); font-weight:600; text-decoration:none; border-bottom:1px dashed var(--accent-2); }
+  /* ---- 30 秒速懂 ---- */
+  .quick { margin-top:20px; background:#fffdf2; border:1px solid #eadfa8; border-left:5px solid #d9a406; border-radius:12px; padding:14px 22px; font-size:.96em; position:relative; }
+  .quick .q-tag { display:inline-block; background:linear-gradient(135deg,#d9a406,#f0b429); color:#fff; font-weight:700; font-size:.78em; border-radius:999px; padding:2px 14px; margin-bottom:8px; }
+  .quick p { margin:.4em 0; }
+
   footer { margin-top:56px; padding-top:18px; border-top:1px solid var(--border); font-size:.85em; color:var(--muted); text-align:center; }
 </style>
 </head>
@@ -100,6 +105,12 @@
     <span class="chip">来源：<b>已联网核实</b></span>
   </div>
 </header>
+
+<div class="quick">
+  <span class="q-tag">⚡ 30 秒速懂</span>
+  <p><strong>一句话：</strong>Skill 就是提前写给 AI 的"岗位操作手册"，Agent 遇到同类任务会自动翻开来照着办。</p>
+  <p><strong>举个例子：</strong>像带新员工——不用每次都口头交代"报表要用这个格式、先查数再核对"，而是把规矩写成一本手册放进资料柜，员工接到任务自己去取。你正在看的这个仓库里就有真实的一本：<code>SKILL.md</code>，它规定了"学一个新概念要生成什么样的资料"。有了它，下次说一句"帮我学 RAG"，AI 就知道整套流程。</p>
+</div>
 
 <nav class="toc">
   <a href="#goals">学习目标</a><a href="#questions">核心问题</a><a href="#personal">我的理解</a><a href="#mechanism">核心机制</a><a href="#scene">应用场景</a><a href="#vs">概念辨析</a><a href="#quiz">自测</a><a href="#sources">参考来源</a>
@@ -162,7 +173,7 @@ description: 做什么 + 什么时候用   # Agent 判断"要不要激活"的唯
       <tr><td>③ 附属文件（references / scripts）</td><td>执行中按需读取或直接运行</td><td>2000+ token，仅在需要时</td></tr>
     </table>
     </div>
-    <p class="note">注：Agent Skills 格式由 Anthropic 提出，已于 2025 年 12 月作为开放标准发布（skill.md），可跨平台使用。存放位置分两级：用户级（如 <code>~/.workbuddy/skills/</code>，个人全局可用）与项目级（仓库内 <code>.workbuddy/skills/</code>，随项目共享给团队）。</p>
+    <p class="note">注：Agent Skills 格式由 Anthropic 提出，现已发展为开放标准（agentskills.io），可跨平台使用。存放位置分两级：用户级（如 <code>~/.workbuddy/skills/</code>，个人全局可用）与项目级（仓库内 <code>.workbuddy/skills/</code>，随项目共享给团队）。</p>
   </div>
 </section>
 
@@ -247,13 +258,13 @@ description: 做什么 + 什么时候用   # Agent 判断"要不要激活"的唯
 <section id="sources">
   <div class="sec-head"><span class="sec-num">8</span><h2>参考来源（已核实可访问）</h2></div>
   <div class="card">
-    <div class="src"><span class="n">1</span><div><a href="https://claude.com/blog/equipping-agents-for-the-real-world-with-agent-skills">Anthropic 官方博客：Equipping agents for the real world with Agent Skills</a><br>Skill 的定义、SKILL.md 结构与渐进式披露机制的原始说明。本文机制部分主要依据此文。</div></div>
-    <div class="src"><span class="n">2</span><div><a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview">Claude 平台文档：Agent Skills Overview</a><br>YAML 元数据字段要求、安全注意事项与官方 Skill 编写规范。</div></div>
-    <div class="src"><span class="n">3</span><div><a href="http://skill.md/">skill.md：Agent Skills 开放标准</a><br>Skill 的目录结构规范（references/、scripts/ 等）与跨平台开放标准说明。</div></div>
+    <div class="src"><span class="n">1</span><div><a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Anthropic 官方工程博客：Equipping agents for the real world with Agent Skills</a><br>Skill 的定义、SKILL.md 结构与渐进式披露机制的原始说明。本文机制部分主要依据此文。</div></div>
+    <div class="src"><span class="n">2</span><div><a href="https://code.claude.com/docs/en/skills">Claude Code 官方文档：Extend Claude with skills</a><br>YAML 元数据字段要求、Skill 目录结构与安全注意事项的官方规范。</div></div>
+    <div class="src"><span class="n">3</span><div><a href="https://agentskills.io/">Agent Skills 开放标准官网（agentskills.io）</a><br>Skill 的标准化格式与目录结构规范（references/、scripts/ 等），以及跨平台开放标准说明。</div></div>
   </div>
 </section>
 
-<footer>由 <b>learning-material-generator</b> Skill 生成 ｜ "我的理解"部分建议本人阅读后用自己的话修改 ｜ 2026-09-06</footer>
+<footer>由 <b>learning-material-generator</b> Skill 生成 ｜ "我的理解"部分建议本人阅读后用自己的话修改 ｜ 生成 2026-09-06 ｜ 修订 2026-09-10（新增"30 秒速懂"，核实并修正参考来源）</footer>
 </div>
 
 <script>

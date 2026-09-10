@@ -85,6 +85,11 @@
   .src { display:flex; gap:10px; margin:12px 0; padding:12px 16px; background:var(--tint1); border-radius:10px; font-size:.94em; }
   .src .n { flex:none; width:22px; height:22px; border-radius:50%; background:var(--accent); color:#fff; font-size:.75em; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:.25em; }
   .src a { color:var(--accent); font-weight:600; text-decoration:none; border-bottom:1px dashed var(--accent-2); }
+  /* ---- 30 秒速懂 ---- */
+  .quick { margin-top:20px; background:#fffdf2; border:1px solid #eadfa8; border-left:5px solid #d9a406; border-radius:12px; padding:14px 22px; font-size:.96em; position:relative; }
+  .quick .q-tag { display:inline-block; background:linear-gradient(135deg,#d9a406,#f0b429); color:#fff; font-weight:700; font-size:.78em; border-radius:999px; padding:2px 14px; margin-bottom:8px; }
+  .quick p { margin:.4em 0; }
+
   footer { margin-top:56px; padding-top:18px; border-top:1px solid var(--border); font-size:.85em; color:var(--muted); text-align:center; }
 </style>
 </head>
@@ -100,6 +105,12 @@
     <span class="chip">来源：<b>已联网核实</b></span>
   </div>
 </header>
+
+<div class="quick">
+  <span class="q-tag">⚡ 30 秒速懂</span>
+  <p><strong>一句话：</strong>Agent 就是"会自己动手干活的 AI"，而不只是"会聊天给建议的 AI"。</p>
+  <p><strong>举个例子：</strong>你对普通聊天 AI 说"帮我交作业"，它只会回复你一篇操作教程；你对 Agent 说同样的话，它自己查登录状态 → 建仓库 → 写文件 → 提交推送，全程自己决定每一步做什么，做完再向你汇报。就像<strong>问路</strong>和<strong>雇个司机</strong>的区别：司机不需要你指路，他自己看导航把车开到。</p>
+</div>
 
 <nav class="toc">
   <a href="#goals">学习目标</a><a href="#questions">核心问题</a><a href="#personal">我的理解</a><a href="#mechanism">核心机制</a><a href="#scene">应用场景</a><a href="#vs">概念辨析</a><a href="#quiz">自测</a><a href="#sources">参考来源</a>
@@ -242,11 +253,11 @@
   <div class="card">
     <div class="src"><span class="n">1</span><div><a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic《Building Effective Agents》</a><br>讲清楚了 Workflow 与 Agent 的分界线（控制权归属）、增强型 LLM 构件，以及"从简单开始"的工程原则。本文定义部分主要依据此文。</div></div>
     <div class="src"><span class="n">2</span><div><a href="https://academy.claude.com/courses/building-with-the-claude-api/agents-and-workflows">Claude Academy：Agents and workflows</a><br>官方课程，用实例对比了 Workflow 与 Agent 各自的优缺点和选型建议。</div></div>
-    <div class="src"><span class="n">3</span><div><a href="https://docs.anthropic.com/zh-CN/docs/glossary">Anthropic 官方术语表（中文）</a><br>核对 LLM、上下文窗口等基础术语的官方定义。</div></div>
+    <div class="src"><span class="n">3</span><div><a href="https://www.anthropic.com/engineering/building-agents-with-the-claude-agent-sdk">Anthropic 官方工程博客：Building agents with the Claude Agent SDK</a><br>进一步讲清 Agent 的基本构件（模型、工具、编排循环）以及从原型走向生产的注意事项。</div></div>
   </div>
 </section>
 
-<footer>由 <b>learning-material-generator</b> Skill 生成 ｜ "我的理解"部分建议本人阅读后用自己的话修改 ｜ 2026-09-06</footer>
+<footer>由 <b>learning-material-generator</b> Skill 生成 ｜ "我的理解"部分建议本人阅读后用自己的话修改 ｜ 生成 2026-09-06 ｜ 修订 2026-09-10（新增"30 秒速懂"，核实并修正参考来源）</footer>
 </div>
 
 <script>
