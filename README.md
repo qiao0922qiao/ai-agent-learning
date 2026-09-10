@@ -20,8 +20,7 @@ ai-agent-learning/
 │   ├── agent.html                  # 概念资料：Agent（智能体）
 │   ├── llm-context.html            # 概念资料：大模型的上下文
 │   ├── skill.html                  # 概念资料：Skill（智能体技能）
-│   ├── concept-relationship.html   # 三概念关系说明（可视化版，含 SVG 关系图）
-│   └── concept-relationship.md     # 三概念关系说明（Markdown 版，含 Mermaid 图）
+│   └── concept-relationship.html   # 三概念关系说明（文字 + 表格 + SVG 关系图）
 ├── README.md
 └── .gitignore
 ```
@@ -46,8 +45,7 @@ ai-agent-learning/
 | `learning-materials/agent.html` | Agent（智能体） | 不只会聊天，还会自己决定"下一步做什么"去完成任务的 AI 系统 |
 | `learning-materials/llm-context.html` | 大模型的上下文 | 模型生成每个字时能"看到"的全部信息，是它唯一的工作记忆 |
 | `learning-materials/skill.html` | Skill（智能体技能） | 把"某类任务怎么做"写成文件夹沉淀下来，让 Agent 随用随取 |
-| `learning-materials/concept-relationship.html` | 三者关系 | Agent 是干活的"人"，上下文是"工作台"，Skill 是"操作手册"（可视化版） |
-| `learning-materials/concept-relationship.md` | 三者关系 | 同上内容的 Markdown + Mermaid 版，方便在 GitHub 上直接阅读 |
+| `learning-materials/concept-relationship.html` | 三者关系 | Agent 是干活的"人"，上下文是"工作台"，Skill 是"操作手册" |
 
 每份资料均为单文件 HTML（无外部依赖），双击即可在浏览器打开；自测部分为**交互式单选题**——点击选项即时判分（对/错高亮）、展开解析、自动计分，可一键重新作答。
 
@@ -61,7 +59,7 @@ ai-agent-learning/
 4. **"我的理解"部分**：以第一人称类比重写，未整段照搬 AI 对话或来源原文；后续会继续用自己的语言修订（每个概念至少保留一个原创类比）
 5. **界面与自测形式升级（2026-09-06 二次迭代）**：四份资料统一升级视觉模板（渐变页头、吸顶目录导航、卡片式排版、每概念独立主题色）；自测由折叠问答改为交互式单选题（即时判分 + 解析 + 计分 + 重新作答），同步更新了 SKILL.md 的输出规范，保证后续生成的新资料沿用同一格式
 6. **参考来源可访问性复查（2026-09-10 三次迭代）**：对全部参考链接逐个实际访问核验，发现 3 个链接在当前网络环境下存在区域访问限制（Anthropic 中文文档的 glossary 与 context-windows 页、Claude 平台文档的 Agent Skills Overview 页，均跳转到"App unavailable in region"错误页），已分别替换为可正常访问的官方来源（Effective context engineering for AI agents、Building agents with the Claude Agent SDK、Claude Code: Extend Claude with skills）；`skill.md` 跳转链接改为其标准官网 agentskills.io；同时删除了 SKILL.md 机制说明中一处无法核实的日期表述。替换后的全部链接于 2026-09-10 逐一实测可访问
-7. **可读性改进（2026-09-10 三次迭代）**：四份资料页首新增"30 秒速懂"板块——一句话定义 + 一个生活化例子（司机/草稿纸/员工手册类比），先建立直觉再读正文；新增 `concept-relationship.md`（作业要求的 Markdown 版概念关系说明，含 Mermaid 图）；以上调整同步写入 SKILL.md 的输出结构与自检清单，保证后续生成的资料沿用同一标准
+7. **可读性改进（2026-09-10 三次迭代）**：四份资料页首新增"30 秒速懂"板块——一句话定义 + 一个生活化例子（司机/草稿纸/员工手册类比），先建立直觉再读正文；以上调整同步写入 SKILL.md 的输出结构与自检清单，保证后续生成的资料沿用同一标准
 8. **后续使用建议**：用该 Skill 学习新概念时，生成后应重点修改"我的理解"小节，使其真正成为自己的表述
 
 ## 安全说明
